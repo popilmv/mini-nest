@@ -4,4 +4,7 @@ export function UsePipes(...pipes: any[]): MethodDecorator & ClassDecorator {
     else Reflect.defineMetadata('mini:pipes', pipes, target);
   };
 }
+export function UsePipe(pipe: any): MethodDecorator & ClassDecorator {
+  return UsePipes(pipe);
+}
 

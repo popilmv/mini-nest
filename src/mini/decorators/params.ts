@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 export type ParamSource = 'param' | 'query' | 'body';
 export type ParamMeta = { index: number; source: ParamSource; name?: string; pipes: any[] };
 

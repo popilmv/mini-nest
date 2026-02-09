@@ -1,3 +1,4 @@
+import { getInjectTokens } from './decorators/inject';
 import { Token } from './tokens';
 
 type Provider =
@@ -36,12 +37,14 @@ export class Container {
   }
 
   private instantiate<T>(clazz: new (...args: any[]) => T): T {
-    const paramTypes: any[] = Reflect.getMetadata('design:paramtypes', clazz) ?? [];
-    const injectOverrides: Map<number, Token> =
-      Reflect.getMetadata('mini:inject_tokens', clazz) ?? new Map<number, Token>();
+    const paramTypes = Reflect.getMetadata('design:paramtypes', clazz) ?? [];
+    const injectOverrides = getInjectTokens(clazz);
 
-    const args = paramTypes.map((t, idx) => this.resolve(injectOverrides.get(idx) ?? t));
-    return new clazz(...args);
+    const deps = paramTypes.map((p: any, idx: number) => {
+      const token = injectOverrides[idx] ?? p;
+      return this.resolve(token);
+    });
+
+    return new clazz(...deps);
   }
 }
-
