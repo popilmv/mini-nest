@@ -28,5 +28,3 @@ pids
 *.seed
 *.pid.lock
 
-verify-di.ts
-
